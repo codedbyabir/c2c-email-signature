@@ -1,78 +1,207 @@
 <!DOCTYPE html>
 <html>
-<body style="margin:0; padding:0;">
+<head>
+<meta charset="UTF-8">
+<title>Email Signature Generator</title>
 
-<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-  <tr>
-    <td>
+<style>
+  body {background:#ffffff;}
+  .wrapper { background:#fff; padding:20px; border-radius:10px; max-width:600px; margin:auto; box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+  input {
+    padding:10px; font-size:16px; margin-bottom:10px;
+    border-radius:6px; border:1px solid #ccc;
+  }
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+  button {
+    width:100%; padding:12px; background:#EF9736; border:none;
+    border-radius:8px; color:#fff; font-size:17px; cursor:pointer;
+  }
+  button:hover { background:#d77f22; }
+  @media(max-width:768px){
 
-      <!-- Heading Section -->
-      <p style="margin:0; font-size:16px; color:#EF9736; font-weight:bold;">
-        Thank You | CTC Funding Dept.
-      </p>
-      <p style="margin:0; font-size:22px; color:#02111F; font-weight:bold; ">
-        Kevin Duffy JR.
-      </p>
+  }
+</style>
+</head>
 
-      <!-- Contact Section -->
+<body>
+
+<div class="wrapper">
+  <h2>Email Signature Generator</h2>
+
+<div class="input-wrapper">
+  <input type="text" id="inputName" placeholder="Enter Name (ex: Kevin Duffy JR.)">
+  <input type="text" id="inputPhone" placeholder="Enter Phone (ex: +1 856-219-4201)">
+  <input type="text" id="inputEmail" placeholder="Enter Email (ex: kevin@committedtocapital.com)">
+<button id="copy-btn">Copy Signature</button>
+</div>
+  
+
+  <!-- Hidden element for copying -->
+  <div id="copy-area" contenteditable="true" style="opacity:0; position:absolute; left:-9999px;"></div>
+
+  <!-- Signature Preview -->
+  <div id="signature-preview" style="margin-top:20px; padding:15px; background:#fff; border:1px solid #ddd; border-radius:8px;">
+
+    <div id="signature-html">
+
       <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
         <tr>
-          <td valign="middle" style="">
-            <a href="tel:+18562194201" style="text-decoration:none; color:#02111F; font-size:15px;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Phone.png"
-                   width="16" style="vertical-align:middle; margin-right:6px;">
-              +1 856-219-4201
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td valign="middle" style="padding-bottom:10px;">
-            <a href="mailto:kevin@committedtocapital.com" style="text-decoration:none; color:#02111F; font-size:15px;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Email.png"
-                   width="16" style="vertical-align:middle; margin-right:6px;">
-              kevin@committedtocapital.com
-            </a>
-          </td>
-        </tr>
-      </table>
-
-      <!-- Social Icons -->
-      <table cellpadding="0" cellspacing="0" border="0" style="">
-        <tr>
-          <td style="padding-right:6px;">
-            <a href="https://www.trustpilot.com/review/committedtocapital.com" style="display:inline-block; padding: 5px; border-radius: 50px; background-color: #EF9736;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Star.png"
-                   width="20" height="20" style="display:block;">
-            </a>
-          </td>
-
-          <td style="padding-right:6px;">
-            <a href="https://www.linkedin.com/company/committed-to-capital" style="display:inline-block; padding: 5px; border-radius: 50px; background-color: #EF9736;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Linkdin.png"
-                   width="20" height="20" style="display:block;">
-            </a>
-          </td>
-
-          <td style="padding-right:6px;">
-            <a href="https://www.instagram.com/committedtocapital/" style="display:inline-block; padding: 5px; border-radius: 50px; background-color: #EF9736;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Instagram.png"
-                   width="20" height="20" style="display:block;">
-            </a>
-          </td>
-
           <td>
-            <a href="https://share.google/mIq5ybzcQJAo5B0gu" style="display:inline-block; padding: 5px; border-radius: 50px; background-color: #EF9736;">
-              <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_store.png"
-                   width="20" height="20" style="display:block;">
-            </a>
+
+            <p style="margin:0; font-size:16px; color:#EF9736; font-weight:bold;">
+              Thank You | CTC Funding Dept.
+            </p>
+
+            <p id="sig-name" style="margin:0; font-size:22px; color:#02111F; font-weight:bold;">
+              Kevin Duffy JR.
+            </p>
+
+            <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>
+                <td valign="middle">
+                  <a id="sig-phone-link" href="tel:+18562194201" style="text-decoration:none; color:#02111F; font-size:15px;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Phone.png"
+                         width="16" style="vertical-align:middle; margin-right:6px;">
+                    <span id="sig-phone">+1 856-219-4201</span>
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td valign="middle" style="padding-bottom:10px;">
+                  <a id="sig-email-link" href="mailto:kevin@committedtocapital.com" style="text-decoration:none; color:#02111F; font-size:15px;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Email.png"
+                         width="16" style="vertical-align:middle; margin-right:6px;">
+                    <span id="sig-email">kevin@committedtocapital.com</span>
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-right:6px;">
+                  <a href="https://www.trustpilot.com/review/committedtocapital.com" style="display: flex; align-items: center; justify-content: center;padding:5px; border-radius:50px; background-color:#EF9736;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Star.png" width="20" height="20">
+                  </a>
+                </td>
+
+                <td style="padding-right:6px;">
+                  <a href="https://www.linkedin.com/company/committed-to-capital" style="display: flex; align-items: center; justify-content: center; padding:5px; border-radius:50px; background-color:#EF9736;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Linkdin.png" width="20" height="20">
+                  </a>
+                </td>
+
+                <td style="padding-right:6px;">
+                  <a href="https://www.instagram.com/committedtocapital/" style="display: flex; align-items: center; justify-content: center; padding:5px; border-radius:50px; background-color:#EF9736;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_Instagram.png" width="20" height="20">
+                  </a>
+                </td>
+
+                <td>
+                  <a href="https://share.google/mIq5ybzcQJAo5B0gu" style="display: flex; align-items: center; justify-content: center; padding:5px; border-radius:50px; background-color:#EF9736;">
+                    <img src="https://committedtocapital.com/wp-content/uploads/2025/12/C2C_icon_store.png" width="20" height="20">
+                  </a>
+                </td>
+              </tr>
+            </table>
+
           </td>
         </tr>
       </table>
 
-    </td>
-  </tr>
-</table>
+    </div>
+  </div>
+</div>
+
+<script>
+// 1. Function to update the signature preview
+function updateSignature() {
+    // Update Name
+    let name = document.getElementById("inputName").value.trim();
+    if (name) {
+        document.getElementById("sig-name").innerText = name;
+    } else {
+        // Use placeholder value if input is empty
+        document.getElementById("sig-name").innerText = "Kevin Duffy JR.";
+    }
+
+    // Update Phone
+    let phone = document.getElementById("inputPhone").value.trim();
+    let phoneLink = document.getElementById("sig-phone-link");
+    let sigPhone = document.getElementById("sig-phone");
+    if (phone) {
+        sigPhone.innerText = phone;
+        // Strip non-numeric/non-plus characters for the 'tel:' link
+        phoneLink.setAttribute("href", "tel:" + phone.replace(/[^0-9+]/g, ""));
+    } else {
+        sigPhone.innerText = "+1 856-219-4201";
+        phoneLink.setAttribute("href", "tel:+18562194201");
+    }
+
+    // Update Email
+    let email = document.getElementById("inputEmail").value.trim();
+    let emailLink = document.getElementById("sig-email-link");
+    let sigEmail = document.getElementById("sig-email");
+    if (email) {
+        sigEmail.innerText = email;
+        emailLink.setAttribute("href", "mailto:" + email);
+    } else {
+        sigEmail.innerText = "kevin@committedtocapital.com";
+        emailLink.setAttribute("href", "mailto:kevin@committedtocapital.com");
+    }
+}
+
+
+// 2. Attach real-time listeners to input fields
+document.getElementById("inputName").addEventListener("input", updateSignature);
+document.getElementById("inputPhone").addEventListener("input", updateSignature);
+document.getElementById("inputEmail").addEventListener("input", updateSignature);
+
+
+// 3. Keep the copy functionality on button click
+document.getElementById("copy-btn").addEventListener("click", function() {
+    // Ensure the signature is updated one last time (redundant but safe)
+    updateSignature(); 
+
+    // Copy as rich HTML
+    let htmlContent = document.getElementById("signature-html").outerHTML; // Use outerHTML to include the main table tag
+    let copyArea = document.getElementById("copy-area");
+    
+    // IMPORTANT: To ensure proper formatting, copy the whole signature-html content, including the outer <div>/<table>.
+    // However, your original HTML structure uses the parent of the first table, so we'll stick to innerHTML for max compatibility.
+    let contentToCopy = document.getElementById("signature-html").innerHTML;
+    
+    copyArea.innerHTML = contentToCopy;
+    
+    // Select the content
+    let range = document.createRange();
+    range.selectNodeContents(copyArea);
+
+    let sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    // Focus and execute copy command
+    copyArea.focus();
+    
+    try {
+        document.execCommand("copy");
+        alert("Signature copied! Paste into your email client's signature settings.");
+    } catch (err) {
+        console.error('Copy failed:', err);
+        alert('Copy failed. Please select the signature preview manually and copy.');
+    }
+    
+    sel.removeAllRanges(); // Deselect the text
+});
+
+// 4. Run once on page load to initialize the preview with placeholders
+document.addEventListener("DOMContentLoaded", updateSignature);
+</script>
 
 </body>
 </html>
